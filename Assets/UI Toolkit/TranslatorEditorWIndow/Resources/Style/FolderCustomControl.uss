@@ -1,0 +1,36 @@
+/* FolderCustomControl.uss */
+#ImageFolder{
+     height: 250px; 
+    width: 200px;
+}
+#Button
+{
+    width: 85px; 
+    height: 25px; 
+    padding: 2px;  
+}
+
+#LabelField {
+    margin-top: 5px;
+    margin-bottom: 3px; 
+    font-size: 30px;
+}
+
+#AddButton
+{
+    margin-bottom: 30px; 
+}
+
+#FolderSettButton
+{
+    width: 100px;
+    height: 20px; 
+    margin-bottom: 10px; 
+}
+
+#FoldersettScroll
+{
+   left: 310px; 
+
+}
+

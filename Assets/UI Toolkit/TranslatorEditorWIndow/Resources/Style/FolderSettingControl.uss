@@ -1,0 +1,21 @@
+#addSnippetButton
+{
+	height: 50px;
+	width: 50px; 
+}
+
+#folderSnippetData
+{
+  	height: 50px;
+	width: 50px; 
+}
+
+#snippets
+{
+	margin-top: 10px; 
+}
+
+#folderNameField
+{
+	margin-bottom: 10px; 
+}

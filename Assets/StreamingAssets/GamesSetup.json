@@ -1,0 +1,26 @@
+{
+    "Entries": [
+        {
+            "CoreName": "np2kai",
+            "GamesDirectory": "/Nostalgia 1907",
+            "GameNames": [
+                "Nostalgia 1907 (System disk)"
+            ]
+        },
+        {
+            "CoreName": "puae",
+            "GamesDirectory": "D:/__Roms",
+            "GameNames": [
+                "Wings (1990)(Cinemaware)[cr Power Group](Disk 1 of 2)(Reel 1)",
+                "Wings (1990)(Cinemaware)[cr Power Group](Disk 2 of 2)(Reel 2)"
+            ]
+        },
+        {
+            "CoreName": "pcsx_rearmed",
+            "GamesDirectory": "D:/__Roms/Sony - Playstation",
+            "GameNames": [
+                "Dino Crisis 2 (USA)"
+            ]
+        }
+    ]
+}

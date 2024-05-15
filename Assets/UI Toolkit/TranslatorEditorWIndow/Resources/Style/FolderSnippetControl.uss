@@ -1,0 +1,75 @@
+#UploadButton
+{
+	margin-top: 10px; 
+	margin-bottom: 10px; 
+	height: 30px;
+	width: 200px; 
+}
+
+#baseImage
+{
+	height: 500px;
+	width: 500px; 
+}
+
+#MoveUpButton
+{
+	height: 20px;
+	width: 250px; 
+	margin-bottom: 5px;
+}
+
+#MoveDownButton
+{
+	height: 20px;
+	width: 250px; 
+}
+
+#SnippetName
+{
+	height: 25px;
+	width: 300px;
+	margin-top: 5px; 
+	margin-bottom: 5px; 
+}
+
+#DeleteSnippet
+{ 
+	height: 20px;
+	width: 250px; 
+	margin-bottom: 20px;
+}
+
+#labelSnippetImage
+{
+	margin-top: 30px
+    font-size: 30px;
+}
+
+#loadSnippetState
+{
+  height: 20px;
+	width: 250px; 
+	margin-top: 20px;
+	margin-bottom: 20 px; 
+}
+
+#LocalizedTextField
+{
+	margin-bottom: 50 px; 
+	margin-top: 10 px;
+	width: 500px;
+	height: 50px; 
+}
+
+#LocalizedName
+{
+	margin-top: 50px; 
+	font-size: 15px; 
+}
+
+#JapaneseStringLabel
+{
+	margin-top: 50px; 
+	 font-size: 15px;
+}
