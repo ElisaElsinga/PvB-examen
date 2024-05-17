@@ -6,5 +6,5 @@
         <ui:Button text="Add Folder" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AddButton" />
     </ui:ScrollView>
     <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="SettingScroll" style="align-self: flex-end; align-items: stretch; justify-content: space-around; left: 314px; top: 10px; right: 0; bottom: 25px; position: absolute; width: 230px; height: 400px;" />
-    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="SnippetScroll" style="height: 724px; position: absolute; width: 783px; left: 576px; top: 2px; align-self: auto; justify-content: flex-start; align-items: stretch;" />
+    <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="SnippetScroll" style="height: 648px; position: absolute; width: 1056px; left: 548px; top: 20px; align-self: auto; justify-content: flex-start; align-items: stretch;" />
 </ui:UXML>

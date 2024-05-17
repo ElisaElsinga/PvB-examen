@@ -18,7 +18,7 @@ public class FolderEditorWindow : EditorWindow
     {
         FolderEditorWindow wnd = GetWindow<FolderEditorWindow>();
         wnd.titleContent = new GUIContent("Folder Select Window");
-        wnd.maxSize = new Vector2(1200, 750);
+        wnd.maxSize = new Vector2(2000, 750);
         wnd.minSize = wnd.maxSize;
     }
 
@@ -50,7 +50,7 @@ public class FolderEditorWindow : EditorWindow
     private void AdjustScrollViewSize()
     {
         Rect scrollViewRect = new Rect(0, EditorGUIUtility.singleLineHeight, position.width, position.height - EditorGUIUtility.singleLineHeight);
-        scrollView.style.height = new StyleLength(scrollViewRect.height);
+        if (scrollView != null) scrollView.style.height = new StyleLength(scrollViewRect.height);
     }
 
     private void FolderControl()

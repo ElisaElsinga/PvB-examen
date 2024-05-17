@@ -326,11 +326,15 @@ public class FolderSnippetControl : VisualElement
                 Mathf.FloorToInt(selectedAreaLocal.width * screenshotSize.x),
                 Mathf.FloorToInt(selectedAreaLocal.height * screenshotSize.y)
             );
-          
+
+            //flip y coordinate in selected pixels for cutting out the texture since y=0 is at the bottom in texture coords
+            RectInt selectedAreaPixelsTexture = selectedAreaPixels;
+            selectedAreaPixelsTexture.y = screenshotSize.y - selectedAreaPixelsTexture.height - selectedAreaPixelsTexture.y;
+
             // Cut out the selected area from the screenshot
             Texture2D fullTexture = screenshotImage.sprite.texture;
-            Texture2D selectedTexture = new Texture2D(selectedAreaPixels.width, selectedAreaPixels.height);
-            Color[] pixels = fullTexture.GetPixels(selectedAreaPixels.x, selectedAreaPixels.y, selectedAreaPixels.width, selectedAreaPixels.height);
+            Texture2D selectedTexture = new Texture2D(selectedAreaPixelsTexture.width, selectedAreaPixelsTexture.height);
+            Color[] pixels = fullTexture.GetPixels(selectedAreaPixelsTexture.x, selectedAreaPixelsTexture.y, selectedAreaPixelsTexture.width, selectedAreaPixelsTexture.height);
             selectedTexture.SetPixels(pixels);
             selectedTexture.Apply();
 
