@@ -78,7 +78,8 @@ public class FolderEditorWindow : EditorWindow
         newFolderControl.FolderButtonClicked += AddFolderSetting;
         newFolderControl.moveUpButton.clicked += ReloadHierarchy;
         newFolderControl.moveDownButton.clicked += ReloadHierarchy;
-        newFolderControl.m_Button.clicked += RemoveLists; 
+        newFolderControl.m_Button.clicked += RemoveLists;
+        newFolderControl.m_folderSett.clicked += RemoveSnippets;
 
         scrollView.Add(newFolderControl);
         folderControlsList.Add(newFolderControl);
@@ -135,7 +136,6 @@ public class FolderEditorWindow : EditorWindow
     {
         FolderSettingControl folderSettingControl = new FolderSettingControl(folderId);
         SettingScroll.Clear();
-
         SettingScroll.Add(folderSettingControl); 
 
 
@@ -144,6 +144,11 @@ public class FolderEditorWindow : EditorWindow
     private void RemoveLists()
     {
         SettingScroll.Clear();
+        SnippetScroll.Clear(); 
+    }
+
+    private void RemoveSnippets()
+    {
         SnippetScroll.Clear(); 
     }
 }
