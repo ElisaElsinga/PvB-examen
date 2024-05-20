@@ -20,7 +20,7 @@ public class FolderSnippetControl : VisualElement
     int snippetId = -1;
     public Button UploadImage;
     private Image screenshotImage;
-    private Button removeSnippet;
+    public Button removeSnippet;
     public TextField snippetName;
     public Button loadSnippetState;
     private Label labelImageSnippet;
@@ -223,6 +223,7 @@ public class FolderSnippetControl : VisualElement
         if (dialogResult)
         {
             DeleteSnippet();
+            hierarchy.Clear(); 
         }
     }
 

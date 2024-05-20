@@ -98,6 +98,8 @@ public class FolderEditorWindow : EditorWindow
         FolderSnippetControl newFolderSnippetControl = new FolderSnippetControl(snippetId, folderId);
          newFolderSnippetControl.SnippetMoved += ReloadSnippets; 
         SnippetScroll.Add(newFolderSnippetControl);
+
+        newFolderSnippetControl.removeSnippet.clicked += () => ReloadSnippetList(folderId); 
     }
 
     private void ReloadHierarchy()
@@ -111,7 +113,7 @@ public class FolderEditorWindow : EditorWindow
         }
     }
 
-    private void ReloadSnippets(int folderId, int snippetId)
+    public void ReloadSnippets(int folderId, int snippetId)
     {
         scrollView.Clear();
         scrollView.Add(addButton);
@@ -125,6 +127,16 @@ public class FolderEditorWindow : EditorWindow
         FolderSettingControl folderSettingControl = new FolderSettingControl(folderId);
         folderSettingControl.SnippetButtonClicked += AddSnippetControl;
         SettingScroll.Add(folderSettingControl);
+
+    }
+
+    private void ReloadSnippetList(int folderId)
+    {
+        FolderSettingControl folderSettingControl = new FolderSettingControl(folderId);
+        SettingScroll.Clear();
+
+        SettingScroll.Add(folderSettingControl); 
+
 
     }
 }
