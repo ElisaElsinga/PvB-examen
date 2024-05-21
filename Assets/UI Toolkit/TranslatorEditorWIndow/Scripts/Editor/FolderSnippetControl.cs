@@ -1,19 +1,17 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.Windows;
-using System.IO;
+using UnityEditor;
+using System;
 using SK.Libretro.Unity;
 using static SnippetDatabase;
-using System;
-using UnityEditor;
+using System.IO;
 
 public class FolderSnippetControl : VisualElement
 {
     private Rect selectionRect;
     private Vector2 selectionStart;
     private bool isSelecting;
-
-    private VisualElement selectionOverlay; // For displaying the selection box
+    private VisualElement selectionOverlay;
 
     public Button moveUpButton;
     public Button moveDownButton;
@@ -24,19 +22,19 @@ public class FolderSnippetControl : VisualElement
     public TextField snippetName;
     public Button loadSnippetState;
     private Label labelImageSnippet;
-    private Label localizedTextName; 
+    private Label localizedTextName;
     private TextField localizedText;
-    private Label japaneseStringLabel; 
+    private Image selectedAreaImage;
+    private Label japaneseStringLabel;
     public event Action<int, int> SnippetMoved;
 
-
     int folderId = -1;
+    private DropdownField folderDropdown;
 
     [SerializeField] private LibretroInstanceVariable _libretro;
 
     public FolderSnippetControl(int snippetId, int folderId)
     {
-
         this.folderId = folderId;
 
         string stylesheetPath = "Assets/UI Toolkit/TranslatorEditorWIndow/Resources/Style/FolderSnippetControl.uss";
@@ -67,6 +65,13 @@ public class FolderSnippetControl : VisualElement
         moveDownButton.clicked += MoveSnippetDown;
         hierarchy.Add(moveDownButton);
 
+        folderDropdown = new DropdownField("Move to Folder:");
+        folderDropdown.name = "folderDropdown"; 
+        folderDropdown.choices = SnippetDatabase.Instance.Folders.ConvertAll(folder => folder.name);
+        folderDropdown.value = SnippetDatabase.Instance.GetFolderDataByFolderId(folderId)?.name;
+        folderDropdown.RegisterValueChangedCallback(OnFolderSelected);
+        hierarchy.Add(folderDropdown);
+
         labelImageSnippet = new Label();
         labelImageSnippet.text = "Snippet image:";
         labelImageSnippet.name = "labelSnippetImage";
@@ -81,11 +86,11 @@ public class FolderSnippetControl : VisualElement
 
             EditorApplication.delayCall += () =>
             {
-               
                 OpenFiles(snippetId);
             };
         };
         hierarchy.Add(UploadImage);
+
 
         screenshotImage = new Image();
         screenshotImage.name = "screenshot";
@@ -101,18 +106,27 @@ public class FolderSnippetControl : VisualElement
         loadSnippetState.clicked += () => LoadSaveState(snippetId);
         hierarchy.Add(loadSnippetState);
 
-
         selectedAreaImage = new Image();
         selectedAreaImage.name = "SelectedAreaImage";
         hierarchy.Add(selectedAreaImage);
 
         japaneseStringLabel = new Label();
         japaneseStringLabel.text = "Japanese string:";
-   
-
 
         DisplayName();
         InitializeSelectionOverlay();
+    }
+
+    private void OnFolderSelected(ChangeEvent<string> evt)
+    {
+        // Find the selected folder by name
+        var selectedFolder = SnippetDatabase.Instance.Folders.Find(folder => folder.name == evt.newValue);
+        if (selectedFolder != null)
+        {
+            SnippetDatabase.Instance.GetSnippetDataBySnippetId(snippetId).folderId = selectedFolder.id;
+            SnippetDatabase.Instance.Save();
+            SnippetMoved?.Invoke(selectedFolder.id, snippetId); // Trigger SnippetMoved event
+        }
     }
 
     private void OnTextInput(ChangeEvent<string> evt)
@@ -129,7 +143,6 @@ public class FolderSnippetControl : VisualElement
             snippetName.value = snippetData.name;
             snippetName.RegisterValueChangedCallback(OnTextInput);
             snippetName.SetValueWithoutNotify(snippetData.name);
-            // Get the raw texture data from selectedTexture
             Texture2D selectedTexture = new Texture2D(snippetData.spriteWidth, snippetData.spriteHeight);
             selectedTexture.LoadRawTextureData(snippetData.spriteData);
             selectedTexture.Apply();
@@ -143,24 +156,21 @@ public class FolderSnippetControl : VisualElement
             selectedAreaImage.style.height = selectedTexture.height * 2;
 
             hierarchy.Add(selectedAreaImage);
-
-
             Debug.Log("SelectedAreaImage updated with sprite: " + selectedAreaImage.sprite);
 
             japaneseStringLabel = new Label();
             japaneseStringLabel.text = "Japanese string:";
             japaneseStringLabel.name = "JapaneseStringLabel";
-            hierarchy.Add(japaneseStringLabel); 
+            hierarchy.Add(japaneseStringLabel);
 
             localizedTextName = new Label();
             localizedTextName.text = "TextField: localized text";
             localizedTextName.name = "LocalizedName";
-            hierarchy.Add(localizedTextName); 
+            hierarchy.Add(localizedTextName);
 
             localizedText = new TextField();
             localizedText.name = "LocalizedTextField";
             hierarchy.Add(localizedText);
-
             SnippetDatabase.Instance.Save();
             OpenFiles(snippetId);
         }
@@ -170,11 +180,8 @@ public class FolderSnippetControl : VisualElement
         }
     }
 
-
-
     private void CreateSnippet(int snippetId)
     {
-
         if (UnityEngine.Application.isPlaying)
         {
             Mainloop.Instance._libretro.SaveState(snippetId);
@@ -184,7 +191,6 @@ public class FolderSnippetControl : VisualElement
 
     private void OpenFiles(int snippetId)
     {
-
         string snippetImageName = "save_" + snippetId + ".png";
         string filePath = Path.Combine(Application.streamingAssetsPath, "libretro~", "states", "np2kai", "Nostalgia 1907 (System disk)", snippetImageName);
 
@@ -216,14 +222,13 @@ public class FolderSnippetControl : VisualElement
         SnippetMoved?.Invoke(folderId, snippetId);
     }
 
-
     private void ShowDeleteConfirmationPopup()
     {
         bool dialogResult = EditorUtility.DisplayDialog("Delete Snippet", "Are you sure you want to delete the snippet?", "Yes", "Cancel");
         if (dialogResult)
         {
             DeleteSnippet();
-            hierarchy.Clear(); 
+            hierarchy.Clear();
         }
     }
 
@@ -243,7 +248,7 @@ public class FolderSnippetControl : VisualElement
     private void InitializeSelectionOverlay()
     {
         selectionOverlay = new VisualElement();
-        selectionOverlay.style.backgroundColor = new StyleColor(new Color(1f, 1f, 1f, 0.5f)); 
+        selectionOverlay.style.backgroundColor = new StyleColor(new Color(1f, 1f, 1f, 0.5f));
         screenshotImage.Add(selectionOverlay);
         selectionOverlay.style.position = Position.Relative; // to Adjust the position mode
         selectionOverlay.style.left = 0f;
@@ -253,7 +258,6 @@ public class FolderSnippetControl : VisualElement
         selectionOverlay.style.display = DisplayStyle.None; // to hide it at first
     }
 
-    // Makes a well formed rect out of a starting point and dimensions which could be negative
     static Rect MakeSelectionArea(Vector2 selectionStart, Vector2 selectionDimensions)
     {
         // Calculate min and max corners of the selection rect
@@ -281,7 +285,6 @@ public class FolderSnippetControl : VisualElement
             evt.StopPropagation();
         }
     }
-
     private void OnScreenshotMouseMove(MouseMoveEvent evt)
     {
         if (isSelecting)
@@ -299,7 +302,7 @@ public class FolderSnippetControl : VisualElement
         }
     }
 
-    private Image selectedAreaImage;
+
     private void OnScreenshotMouseUp(MouseUpEvent evt)
     {
         if (evt.button == 0 && isSelecting)
@@ -361,7 +364,7 @@ public class FolderSnippetControl : VisualElement
                 hierarchy.Remove(selectedAreaImage);
                 hierarchy.Remove(localizedText);
                 hierarchy.Remove(localizedTextName);
-                hierarchy.Remove(japaneseStringLabel); 
+                hierarchy.Remove(japaneseStringLabel);
                 selectedAreaImage = null;
             }
 
@@ -398,4 +401,4 @@ public class FolderSnippetControl : VisualElement
         isSelecting = false;
         selectionOverlay.style.display = DisplayStyle.None;
     }
-} 
+}
