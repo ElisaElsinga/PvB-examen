@@ -375,8 +375,8 @@ public class FolderSnippetControl : VisualElement
             hierarchy.Add(selectedAreaImage);
 
             // Set the size of the selected area image to match the selected texture size
-            selectedAreaImage.style.width = selectedTextureWidth;
-            selectedAreaImage.style.height = selectedTextureHeight;
+            selectedAreaImage.style.width = selectedTextureWidth * 2;
+            selectedAreaImage.style.height = selectedTextureHeight * 2;
 
             japaneseStringLabel = new Label();
             japaneseStringLabel.text = "Japanese string:";

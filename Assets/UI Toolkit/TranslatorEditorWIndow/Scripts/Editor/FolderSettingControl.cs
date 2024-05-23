@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using UnityEditor;
 using UnityEngine.UIElements;
-using UnityEngine;
 using static SnippetDatabase;
 
 public class FolderSettingControl : VisualElement

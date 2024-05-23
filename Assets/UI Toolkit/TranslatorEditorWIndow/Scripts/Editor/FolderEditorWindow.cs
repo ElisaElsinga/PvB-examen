@@ -2,7 +2,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
-using UnityEngine.WSA;
 
 
 public class FolderEditorWindow : EditorWindow
